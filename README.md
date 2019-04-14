@@ -1,6 +1,49 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
    
+   
+   
+# Reflection.
+I used the same main.cpp provided in the main repository and I made changes to it.
+first, I initialized the current lane to the middle lane (lane number 1) and reference speed to zero in lines (54 to 58).
+
+the code I wrote which starts from line number 101 consists of three main parts :
+
+### 1- prediction:
+(lines from 115 to 168)
+in this part of the code I get data from the sensors and I check whether there is a car in front of, to the right or to the left of our vehicle. I have three flags : 
+- car_front (a car near from us at the same lane) 
+- car_left (a car near from us at the left)
+- car_right (a car near from us at the right)
+A car is considered "dangerous" when its distance to uss less than 30 meters in front or behind us.
+
+
+### 2- behavior:
+(lines from 174 to 212)
+in this part we decide what to do. do we keep lane or change lane left or right?. or do we speed up or slow down?
+first we check if there is a slow car in front of us.. can we change the lane to pass it or no ?? ... actually we can pass it and :
+- change the lane to the left if there is no car left and there is a left lane.
+or,
+- change the lane to the right if there is no car right and there is a right lane.
+or, (if both conditions failed) we just slow down.
+......
+if there is no car in front of us we try to be in the middle lane if it is possible and we also increase the speed of the car if it is bellow the max_speed.
+
+
+### 3- trajectory generation:
+(lines from 214 to 334)
+This part of the code does the calculation of the trajectory based on the speed and lane output from the behavior, car coordinates and past path points.
+
+First, the last two points of the previous trajectory are used in conjunction three points at a far distance to initialize the spline calculation. 
+To make the work simpler to the spline calculation based on those points, the coordinates are transformed to local car coordinates.
+
+In order to ensure more continuity on the trajectory (in addition to adding the last two point of the pass trajectory to the spline adjustment), the pass trajectory points are copied to the new trajectory. The rest of the points are calculated by evaluating the spline and transforming the output coordinates back to the global coordinates.
+
+
+
+
+
+
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2).  
 
